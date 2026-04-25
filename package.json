@@ -1,6 +1,6 @@
 {
   "name": "mobile-header-information-display",
-  "version": "0.1.0",
+  "version": "0.1.6",
   "description": "Obsidian plugin: display note metadata in the mobile header area",
   "main": "main.js",
   "scripts": {
