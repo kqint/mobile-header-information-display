@@ -5,7 +5,7 @@
 在 Obsidian 移动端顶部栏区域显示当前笔记的元信息。
 （当前最低支持的 Obsidian 版本为 `1.5.0`）
 
-![demo](assets/demo.jpg)
+<img src="assets/demo.jpg" width="300" />
 
 ## 功能
 

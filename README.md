@@ -5,7 +5,7 @@
 Display current note metadata in the Obsidian mobile header area.
 (`1.5.0` is the current minimum supported Obsidian version.)
 
-![demo](assets/demo.jpg)
+<img src="assets/demo.jpg" width="300" />
 
 ## Features
 
