@@ -1,0 +1,9 @@
+{
+  "id": "mobile-header-information-display",
+  "name": "Mobile Header Information Display",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Display note metadata in the mobile header area",
+  "author": "",
+  "isDesktopOnly": false
+}

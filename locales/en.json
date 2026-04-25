@@ -1,0 +1,38 @@
+{
+  "settings": {
+    "heading": "Display Settings",
+    "show-path": "Show File Path",
+    "show-path-desc": "Display the note's vault path in the header",
+    "show-ctime": "Show Creation Time",
+    "show-ctime-desc": "Display the note's creation time in the header",
+    "show-mtime": "Show Modification Time",
+    "show-mtime-desc": "Display the note's last modification time in the header",
+    "date-format": "Date Format",
+    "date-format-desc": "Choose the date display format",
+    "custom-heading": "Custom Display Items",
+    "custom-desc": "Add custom information to display",
+    "custom-add": "Add",
+    "custom-remove": "Remove",
+    "custom-label": "Label",
+    "custom-type": "Type",
+    "custom-value": "Value",
+    "custom-type-static": "Static Text",
+    "custom-type-frontmatter": "Frontmatter Field",
+    "custom-type-word-count": "Word Count",
+    "custom-empty": "No custom items",
+    "date-format-1": "YYYY-MM-DD HH:mm",
+    "date-format-2": "YYYY-MM-DD",
+    "date-format-3": "MM-DD HH:mm",
+    "plugin-enabled": "Enable Plugin",
+    "plugin-enabled-desc": "Show information bubbles in the mobile header"
+  },
+  "bubble": {
+    "path": "Path",
+    "ctime": "Created",
+    "mtime": "Modified"
+  },
+  "error": {
+    "no-file": "No active file",
+    "parse-error": "Parse error"
+  }
+}

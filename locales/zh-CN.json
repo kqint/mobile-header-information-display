@@ -1,0 +1,38 @@
+{
+  "settings": {
+    "heading": "显示设置",
+    "show-path": "显示文件路径",
+    "show-path-desc": "在顶部栏显示当前笔记的仓库路径",
+    "show-ctime": "显示创建时间",
+    "show-ctime-desc": "在顶部栏显示笔记的创建时间",
+    "show-mtime": "显示修改时间",
+    "show-mtime-desc": "在顶部栏显示笔记的最后修改时间",
+    "date-format": "日期格式",
+    "date-format-desc": "选择时间显示的格式",
+    "custom-heading": "自定义显示项",
+    "custom-desc": "添加自定义信息显示项",
+    "custom-add": "添加",
+    "custom-remove": "删除",
+    "custom-label": "标签名",
+    "custom-type": "类型",
+    "custom-value": "字段值",
+    "custom-type-static": "静态文本",
+    "custom-type-frontmatter": "Frontmatter 字段",
+    "custom-type-word-count": "字数统计",
+    "custom-empty": "暂无自定义项",
+    "date-format-1": "YYYY-MM-DD HH:mm",
+    "date-format-2": "YYYY-MM-DD",
+    "date-format-3": "MM-DD HH:mm",
+    "plugin-enabled": "启用插件",
+    "plugin-enabled-desc": "在移动端顶部栏显示信息气泡"
+  },
+  "bubble": {
+    "path": "路径",
+    "ctime": "创建于",
+    "mtime": "修改于"
+  },
+  "error": {
+    "no-file": "无活动文件",
+    "parse-error": "解析错误"
+  }
+}
