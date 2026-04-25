@@ -5,6 +5,8 @@
 在 Obsidian 移动端顶部栏区域显示当前笔记的元信息。
 （当前最低支持的 Obsidian 版本为 `1.5.0`）
 
+![demo](assets/demo.jpg)
+
 ## 功能
 
 - 在移动端顶部栏显示当前笔记路径、创建时间和修改时间。
@@ -21,7 +23,6 @@
 3. 输入当前仓库的 GitHub 地址。
 4. 安装完成后，在社区插件列表中启用本插件。
 
-如果当前仓库尚未发布到 GitHub，建议使用手动安装。
 
 ### 手动安装
 
@@ -30,4 +31,4 @@
 /.obsidian/plugins/mobile-header-information-display/
 
 ## 许可证
-MIT。
+[MIT](LICENSE)。

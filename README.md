@@ -5,6 +5,8 @@
 Display current note metadata in the Obsidian mobile header area.
 (`1.5.0` is the current minimum supported Obsidian version.)
 
+![demo](assets/demo.jpg)
+
 ## Features
 
 - Display the current note path, creation time, and modification time in the mobile header.
@@ -21,7 +23,6 @@ This applies after the repository is published to GitHub and installed through B
 3. Enter the GitHub repository URL for this project.
 4. After installation, enable this plugin in the Community Plugins list.
 
-If the repository has not been published to GitHub yet, manual installation is recommended.
 
 ### Manual installation
 
@@ -30,4 +31,4 @@ If the repository has not been published to GitHub yet, manual installation is r
    `/.obsidian/plugins/mobile-header-information-display/`
 
 ## License
-MIT.
+[MIT](LICENSE).
