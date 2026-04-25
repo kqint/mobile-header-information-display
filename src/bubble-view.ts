@@ -1,5 +1,5 @@
 import { type App, TFile, Platform } from 'obsidian';
-import { type PluginSettings, type CustomInfoItem } from './types';
+import { type PluginSettings } from './types';
 import { t } from './i18n';
 
 const CONTAINER_CLASS = 'mhid-info-container';
@@ -44,29 +44,6 @@ function createBubble(label: string, value: string): HTMLElement {
   return bubble;
 }
 
-async function getCustomItemValue(file: TFile, app: App, item: CustomInfoItem): Promise<string> {
-  switch (item.type) {
-    case 'static':
-      return item.value;
-    case 'frontmatter': {
-      const cache = app.metadataCache.getFileCache(file);
-      const frontmatter = cache?.frontmatter;
-      if (frontmatter && item.value in frontmatter) {
-        const val = frontmatter[item.value];
-        return val != null ? String(val) : '';
-      }
-      return '';
-    }
-    case 'word-count': {
-      const content = await app.vault.cachedRead(file);
-      const words = content.trim().split(/\s+/).filter(Boolean).length;
-      return words.toString();
-    }
-    default:
-      return '';
-  }
-}
-
 export function removeInfoContainer(): void {
   const existing = document.querySelector(`.${CONTAINER_CLASS}`);
   if (existing) {
@@ -83,7 +60,7 @@ export async function updateBubbles(
     return;
   }
 
-  if (!settings.pluginEnabled || !file) {
+  if (!file) {
     removeInfoContainer();
     return;
   }
@@ -115,16 +92,6 @@ export async function updateBubbles(
   if (settings.showMtime) {
     const mtime = formatDate(file.stat.mtime, settings.dateFormat);
     items.push({ label: t('bubble.mtime'), value: mtime });
-  }
-
-  for (const item of settings.customItems) {
-    if (!item.enabled) {
-      continue;
-    }
-    const value = await getCustomItemValue(file, app, item);
-    if (value) {
-      items.push({ label: item.label, value });
-    }
   }
 
   if (items.length === 0) {

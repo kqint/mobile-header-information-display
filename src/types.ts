@@ -1,31 +1,20 @@
 export type DateFormat = 'YYYY-MM-DD HH:mm' | 'YYYY-MM-DD' | 'MM-DD HH:mm';
-
-export type CustomItemType = 'static' | 'frontmatter' | 'word-count';
-
-export interface CustomInfoItem {
-  id: string;
-  label: string;
-  type: CustomItemType;
-  value: string;
-  enabled: boolean;
-}
+export type AppLocale = 'auto' | 'en' | 'zh-CN';
 
 export interface PluginSettings {
-  pluginEnabled: boolean;
+  language: AppLocale;
   showPath: boolean;
   showCtime: boolean;
   showMtime: boolean;
   dateFormat: DateFormat;
-  customItems: CustomInfoItem[];
 }
 
 export const DEFAULT_SETTINGS: PluginSettings = {
-  pluginEnabled: true,
+  language: 'auto',
   showPath: true,
   showCtime: true,
   showMtime: true,
   dateFormat: 'YYYY-MM-DD HH:mm',
-  customItems: [],
 };
 
 export interface InfoItemRegistrar {

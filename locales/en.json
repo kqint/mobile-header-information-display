@@ -1,5 +1,10 @@
 {
   "settings": {
+    "language": "Language",
+    "language-desc": "Choose the display language for plugin settings and header labels",
+    "language-auto": "Auto",
+    "language-en": "English",
+    "language-zh-CN": "Simplified Chinese",
     "heading": "Display Settings",
     "show-path": "Show File Path",
     "show-path-desc": "Display the note's vault path in the header",
@@ -10,21 +15,10 @@
     "date-format": "Date Format",
     "date-format-desc": "Choose the date display format",
     "custom-heading": "Custom Display Items",
-    "custom-desc": "Add custom information to display",
-    "custom-add": "Add",
-    "custom-remove": "Remove",
-    "custom-label": "Label",
-    "custom-type": "Type",
-    "custom-value": "Value",
-    "custom-type-static": "Static Text",
-    "custom-type-frontmatter": "Frontmatter Field",
-    "custom-type-word-count": "Word Count",
-    "custom-empty": "No custom items",
+    "custom-coming-soon": "Coming soon",
     "date-format-1": "YYYY-MM-DD HH:mm",
     "date-format-2": "YYYY-MM-DD",
-    "date-format-3": "MM-DD HH:mm",
-    "plugin-enabled": "Enable Plugin",
-    "plugin-enabled-desc": "Show information bubbles in the mobile header"
+    "date-format-3": "MM-DD HH:mm"
   },
   "bubble": {
     "path": "Path",

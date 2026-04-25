@@ -1,11 +1,7 @@
 import { PluginSettingTab, Setting } from 'obsidian';
 import type MobileHeaderInfoPlugin from './main';
-import { type CustomInfoItem, type DateFormat, type CustomItemType } from './types';
-import { t } from './i18n';
-
-function generateId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-}
+import { t, setLocale } from './i18n';
+import { type AppLocale, type DateFormat } from './types';
 
 export class MobileHeaderSettingTab extends PluginSettingTab {
   plugin: MobileHeaderInfoPlugin;
@@ -20,17 +16,28 @@ export class MobileHeaderSettingTab extends PluginSettingTab {
     containerEl.empty();
 
     new Setting(containerEl)
-      .setName(t('settings.plugin-enabled'))
-      .setDesc(t('settings.plugin-enabled-desc'))
-      .addToggle((toggle) =>
-        toggle
-          .setValue(this.plugin.settings.pluginEnabled)
-          .onChange(async (value) => {
-            this.plugin.settings.pluginEnabled = value;
-            await this.plugin.saveSettings();
-            this.plugin.refreshBubbles();
-          }),
-      );
+      .setName(t('settings.language'))
+      .setDesc(t('settings.language-desc'))
+      .addDropdown((dropdown) => {
+        const locales: Array<{ value: AppLocale; labelKey: string }> = [
+          { value: 'auto', labelKey: 'settings.language-auto' },
+          { value: 'en', labelKey: 'settings.language-en' },
+          { value: 'zh-CN', labelKey: 'settings.language-zh-CN' },
+        ];
+
+        for (const locale of locales) {
+          dropdown.addOption(locale.value, t(locale.labelKey));
+        }
+
+        dropdown.setValue(this.plugin.settings.language);
+        dropdown.onChange(async (value) => {
+          this.plugin.settings.language = value as AppLocale;
+          setLocale(this.plugin.settings.language);
+          await this.plugin.saveSettings();
+          await this.plugin.refreshBubbles();
+          this.display();
+        });
+      });
 
     new Setting(containerEl).setName(t('settings.heading')).setHeading();
 
@@ -43,7 +50,7 @@ export class MobileHeaderSettingTab extends PluginSettingTab {
           .onChange(async (value) => {
             this.plugin.settings.showPath = value;
             await this.plugin.saveSettings();
-            this.plugin.refreshBubbles();
+            await this.plugin.refreshBubbles();
           }),
       );
 
@@ -56,7 +63,7 @@ export class MobileHeaderSettingTab extends PluginSettingTab {
           .onChange(async (value) => {
             this.plugin.settings.showCtime = value;
             await this.plugin.saveSettings();
-            this.plugin.refreshBubbles();
+            await this.plugin.refreshBubbles();
           }),
       );
 
@@ -69,7 +76,7 @@ export class MobileHeaderSettingTab extends PluginSettingTab {
           .onChange(async (value) => {
             this.plugin.settings.showMtime = value;
             await this.plugin.saveSettings();
-            this.plugin.refreshBubbles();
+            await this.plugin.refreshBubbles();
           }),
       );
 
@@ -77,11 +84,7 @@ export class MobileHeaderSettingTab extends PluginSettingTab {
       .setName(t('settings.date-format'))
       .setDesc(t('settings.date-format-desc'))
       .addDropdown((dropdown) => {
-        const formats: DateFormat[] = [
-          'YYYY-MM-DD HH:mm',
-          'YYYY-MM-DD',
-          'MM-DD HH:mm',
-        ];
+        const formats: DateFormat[] = ['YYYY-MM-DD HH:mm', 'YYYY-MM-DD', 'MM-DD HH:mm'];
         for (const fmt of formats) {
           dropdown.addOption(fmt, fmt);
         }
@@ -89,106 +92,11 @@ export class MobileHeaderSettingTab extends PluginSettingTab {
         dropdown.onChange(async (value) => {
           this.plugin.settings.dateFormat = value as DateFormat;
           await this.plugin.saveSettings();
-          this.plugin.refreshBubbles();
+          await this.plugin.refreshBubbles();
         });
       });
 
-    // Custom display items section
     new Setting(containerEl).setName(t('settings.custom-heading')).setHeading();
-
-    const descSetting = new Setting(containerEl)
-      .setDesc(t('settings.custom-desc'));
-
-    descSetting.addButton((button) => {
-      button.setButtonText(t('settings.custom-add'));
-      button.onClick(async () => {
-        const newItem: CustomInfoItem = {
-          id: generateId(),
-          label: '',
-          type: 'static',
-          value: '',
-          enabled: true,
-        };
-        this.plugin.settings.customItems.push(newItem);
-        await this.plugin.saveSettings();
-        this.display();
-      });
-    });
-
-    // Render custom items
-    const items = this.plugin.settings.customItems;
-    if (items.length === 0) {
-      new Setting(containerEl).setDesc(t('settings.custom-empty'));
-    } else {
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        this.renderCustomItem(containerEl, item, i);
-      }
-    }
-  }
-
-  private renderCustomItem(containerEl: HTMLElement, item: CustomInfoItem, index: number): void {
-    const setting = new Setting(containerEl);
-
-    // Toggle enabled/disabled
-    setting.addToggle((toggle) => {
-      toggle.setValue(item.enabled);
-      toggle.onChange(async (value) => {
-        item.enabled = value;
-        await this.plugin.saveSettings();
-        this.plugin.refreshBubbles();
-      });
-    });
-
-    // Label input
-    setting.addText((text) => {
-      text.setPlaceholder(t('settings.custom-label'));
-      text.setValue(item.label);
-      text.onChange(async (value) => {
-        item.label = value;
-        await this.plugin.saveSettings();
-        this.plugin.refreshBubbles();
-      });
-    });
-
-    // Type dropdown
-    setting.addDropdown((dropdown) => {
-      const types: Array<{ id: CustomItemType; labelKey: string }> = [
-        { id: 'static', labelKey: 'settings.custom-type-static' },
-        { id: 'frontmatter', labelKey: 'settings.custom-type-frontmatter' },
-        { id: 'word-count', labelKey: 'settings.custom-type-word-count' },
-      ];
-      for (const type of types) {
-        dropdown.addOption(type.id, t(type.labelKey));
-      }
-      dropdown.setValue(item.type);
-      dropdown.onChange(async (value) => {
-        item.type = value as CustomItemType;
-        await this.plugin.saveSettings();
-        this.plugin.refreshBubbles();
-      });
-    });
-
-    // Value input
-    setting.addText((text) => {
-      text.setPlaceholder(t('settings.custom-value'));
-      text.setValue(item.value);
-      text.onChange(async (value) => {
-        item.value = value;
-        await this.plugin.saveSettings();
-        this.plugin.refreshBubbles();
-      });
-    });
-
-    // Remove button
-    setting.addExtraButton((button) => {
-      button.setIcon('trash');
-      button.setTooltip(t('settings.custom-remove'));
-      button.onClick(async () => {
-        this.plugin.settings.customItems.splice(index, 1);
-        await this.plugin.saveSettings();
-        this.display();
-      });
-    });
+    new Setting(containerEl).setDesc(t('settings.custom-coming-soon'));
   }
 }

@@ -1,4 +1,5 @@
 import localesData from 'virtual:locales';
+import type { AppLocale } from './types';
 
 type LocaleDict = Record<string, string | Record<string, unknown>>;
 type LocalesMap = Record<string, LocaleDict>;
@@ -28,7 +29,11 @@ function deepGet(obj: LocaleDict, path: string): string {
   return path;
 }
 
-const currentLocale = getSystemLocale();
+let currentLocale = getSystemLocale();
+
+export function setLocale(locale: AppLocale): void {
+  currentLocale = locale === 'auto' ? getSystemLocale() : locale;
+}
 
 export function t(key: string): string {
   const locale = locales[currentLocale];

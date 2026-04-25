@@ -1,5 +1,10 @@
 {
   "settings": {
+    "language": "语言",
+    "language-desc": "选择插件设置与顶部信息标签的显示语言",
+    "language-auto": "自动",
+    "language-en": "English",
+    "language-zh-CN": "简体中文",
     "heading": "显示设置",
     "show-path": "显示文件路径",
     "show-path-desc": "在顶部栏显示当前笔记的仓库路径",
@@ -10,21 +15,10 @@
     "date-format": "日期格式",
     "date-format-desc": "选择时间显示的格式",
     "custom-heading": "自定义显示项",
-    "custom-desc": "添加自定义信息显示项",
-    "custom-add": "添加",
-    "custom-remove": "删除",
-    "custom-label": "标签名",
-    "custom-type": "类型",
-    "custom-value": "字段值",
-    "custom-type-static": "静态文本",
-    "custom-type-frontmatter": "Frontmatter 字段",
-    "custom-type-word-count": "字数统计",
-    "custom-empty": "暂无自定义项",
+    "custom-coming-soon": "敬请期待",
     "date-format-1": "YYYY-MM-DD HH:mm",
     "date-format-2": "YYYY-MM-DD",
-    "date-format-3": "MM-DD HH:mm",
-    "plugin-enabled": "启用插件",
-    "plugin-enabled-desc": "在移动端顶部栏显示信息气泡"
+    "date-format-3": "MM-DD HH:mm"
   },
   "bubble": {
     "path": "路径",

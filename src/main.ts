@@ -2,6 +2,7 @@ import { Plugin, Platform } from 'obsidian';
 import { type PluginSettings, type InfoItemDefinition, DEFAULT_SETTINGS } from './types';
 import { MobileHeaderSettingTab } from './settings';
 import { updateBubbles, removeInfoContainer } from './bubble-view';
+import { setLocale } from './i18n';
 
 export default class MobileHeaderInfoPlugin extends Plugin {
   settings!: PluginSettings;
@@ -9,6 +10,7 @@ export default class MobileHeaderInfoPlugin extends Plugin {
 
   async onload(): Promise<void> {
     await this.loadSettings();
+    setLocale(this.settings.language);
 
     this.addSettingTab(new MobileHeaderSettingTab(this));
 
@@ -66,6 +68,7 @@ export default class MobileHeaderInfoPlugin extends Plugin {
   async loadSettings(): Promise<void> {
     const saved = await this.loadData();
     this.settings = Object.assign({}, DEFAULT_SETTINGS, saved);
+    setLocale(this.settings.language);
   }
 
   async saveSettings(): Promise<void> {
