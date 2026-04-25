@@ -1,0 +1,32 @@
+.mhid-info-container {
+  flex: 0 0 auto;
+  max-width: calc(100% - 160px);
+  padding: 2px 4px;
+  line-height: 1.4;
+  font-family: var(--font-interface);
+  overflow: hidden;
+}
+
+.mhid-info-row {
+  font-size: 11px; 
+  color: var(--text-muted);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.4;
+  padding: 1px 0;
+}
+
+.mhid-info-label {
+  color: var(--text-accent);
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-right: 3px;
+  white-space: nowrap;
+}
+
+.mhid-info-value {
+  color: var(--text-normal);
+  font-size: 11px;
+}

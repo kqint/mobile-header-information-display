@@ -7,47 +7,6 @@ const ROW_CLASS = 'mhid-info-row';
 const LABEL_CLASS = 'mhid-info-label';
 const VALUE_CLASS = 'mhid-info-value';
 
-let styleInjected = false;
-
-function injectStyles(): void {
-  if (styleInjected) {
-    return;
-  }
-  const style = document.createElement('style');
-  style.textContent = `
-    .${CONTAINER_CLASS} {
-      flex: 0 0 auto;
-      padding: 2px 4px;
-      line-height: 1.35;
-      font-family: var(--font-interface);
-      overflow: visible;
-    }
-    .${ROW_CLASS} {
-      font-size: 10px;
-      color: var(--text-muted);
-      overflow-wrap: break-word;
-      word-break: break-word;
-      line-height: 1.35;
-      padding: 1px 0;
-    }
-    .${LABEL_CLASS} {
-      color: var(--text-accent);
-      font-weight: 600;
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      margin-right: 3px;
-      white-space: nowrap;
-    }
-    .${VALUE_CLASS} {
-      color: var(--text-normal);
-      font-size: 10px;
-    }
-  `;
-  document.head.appendChild(style);
-  styleInjected = true;
-}
-
 function formatDate(timestamp: number, format: string): string {
   const date = new Date(timestamp);
   const pad = (n: number): string => n.toString().padStart(2, '0');
@@ -128,8 +87,6 @@ export async function updateBubbles(
     removeInfoContainer();
     return;
   }
-
-  injectStyles();
 
   const header = document.querySelector('.view-header');
   if (!(header instanceof HTMLElement)) {
