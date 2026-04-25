@@ -6,20 +6,29 @@ import { updateBubbles, removeInfoContainer } from './bubble-view';
 export default class MobileHeaderInfoPlugin extends Plugin {
   settings!: PluginSettings;
   private registeredItems: Map<string, InfoItemDefinition> = new Map();
-  private activeFileChangeHandler: (() => void) | null = null;
 
   async onload(): Promise<void> {
     await this.loadSettings();
 
-    // Register settings tab
     this.addSettingTab(new MobileHeaderSettingTab(this));
 
-    // Only on mobile: set up the active leaf change listener
-    if (Platform.isMobile) {
-      this.setupActiveLeafListener();
+    if (!Platform.isMobile) {
+      return;
     }
 
-    // Register event for metadata changes (to update frontmatter-based custom items)
+    // Wait for layout to be fully rendered before first injection
+    this.app.workspace.onLayoutReady(() => {
+      this.refreshBubbles();
+    });
+
+    // React to switching between notes/views
+    this.registerEvent(
+      this.app.workspace.on('active-leaf-change', () => {
+        this.refreshBubbles();
+      }),
+    );
+
+    // React to metadata changes (frontmatter updates)
     this.registerEvent(
       this.app.metadataCache.on('changed', (file) => {
         const activeFile = this.app.workspace.getActiveFile();
@@ -29,7 +38,7 @@ export default class MobileHeaderInfoPlugin extends Plugin {
       }),
     );
 
-    // Register event for file modifications (to update word count)
+    // React to file content modifications (word count)
     this.registerEvent(
       this.app.vault.on('modify', (file) => {
         const activeFile = this.app.workspace.getActiveFile();
@@ -38,24 +47,11 @@ export default class MobileHeaderInfoPlugin extends Plugin {
         }
       }),
     );
-
-    // Initial refresh
-    this.refreshBubbles();
   }
 
   onunload(): void {
     removeInfoContainer();
     this.registeredItems.clear();
-  }
-
-  private setupActiveLeafListener(): void {
-    this.activeFileChangeHandler = (): void => {
-      this.refreshBubbles();
-    };
-
-    this.registerEvent(
-      this.app.workspace.on('active-leaf-change', this.activeFileChangeHandler),
-    );
   }
 
   async refreshBubbles(): Promise<void> {
@@ -76,17 +72,11 @@ export default class MobileHeaderInfoPlugin extends Plugin {
     await this.saveData(this.settings);
   }
 
-  /**
-   * Register a custom info item programmatically (for other plugins to use).
-   */
   registerInfoItem(item: InfoItemDefinition): void {
     this.registeredItems.set(item.id, item);
     this.refreshBubbles();
   }
 
-  /**
-   * Unregister a previously registered info item.
-   */
   unregisterInfoItem(id: string): void {
     this.registeredItems.delete(id);
     this.refreshBubbles();

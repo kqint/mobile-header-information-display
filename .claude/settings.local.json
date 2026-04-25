@@ -4,7 +4,9 @@
       "Bash(npm install *)",
       "Bash(npx esbuild *)",
       "Bash(node esbuild.config.mjs)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ]
   }
 }

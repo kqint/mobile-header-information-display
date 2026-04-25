@@ -16,20 +16,19 @@ function injectStyles(): void {
   const style = document.createElement('style');
   style.textContent = `
     .${CONTAINER_CLASS} {
-      flex: 1 1 auto;
-      min-width: 0;
-      padding: 2px 6px;
+      flex: 0 0 auto;
+      padding: 2px 4px;
       line-height: 1.35;
       font-family: var(--font-interface);
       overflow: visible;
-      white-space: nowrap;
     }
     .${ROW_CLASS} {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       font-size: 10px;
       color: var(--text-muted);
+      overflow-wrap: break-word;
+      word-break: break-word;
+      line-height: 1.35;
+      padding: 1px 0;
     }
     .${LABEL_CLASS} {
       color: var(--text-accent);
@@ -38,6 +37,7 @@ function injectStyles(): void {
       text-transform: uppercase;
       letter-spacing: 0.3px;
       margin-right: 3px;
+      white-space: nowrap;
     }
     .${VALUE_CLASS} {
       color: var(--text-normal);
@@ -108,22 +108,6 @@ async function getCustomItemValue(file: TFile, app: App, item: CustomInfoItem): 
   }
 }
 
-/**
- * Insertion point: between the left nav buttons and the right "more" button,
- * i.e. right after `.view-header-nav-buttons`, left of `.view-header-right`.
- */
-function getInsertionPoint(): { parent: HTMLElement; refChild: Node | null } | null {
-  const right = document.querySelector('.view-header-right');
-  if (right && right.parentElement) {
-    return { parent: right.parentElement, refChild: right };
-  }
-  const header = document.querySelector('.view-header');
-  if (header instanceof HTMLElement) {
-    return { parent: header, refChild: null };
-  }
-  return null;
-}
-
 export function removeInfoContainer(): void {
   const existing = document.querySelector(`.${CONTAINER_CLASS}`);
   if (existing) {
@@ -147,34 +131,34 @@ export async function updateBubbles(
 
   injectStyles();
 
-  const insertion = getInsertionPoint();
-  if (!insertion) {
+  const header = document.querySelector('.view-header');
+  if (!(header instanceof HTMLElement)) {
     return;
   }
+
+  // Remove clipping so multi-line content is visible
+  header.style.overflow = 'visible';
+  header.style.minHeight = 'auto';
 
   removeInfoContainer();
 
   const container = document.createElement('div');
   container.className = CONTAINER_CLASS;
 
-  // Path
   if (settings.showPath) {
     container.appendChild(createInfoRow(t('bubble.path'), file.path));
   }
 
-  // Creation time
   if (settings.showCtime) {
     const ctime = formatDate(file.stat.ctime, settings.dateFormat);
     container.appendChild(createInfoRow(t('bubble.ctime'), ctime));
   }
 
-  // Modification time
   if (settings.showMtime) {
     const mtime = formatDate(file.stat.mtime, settings.dateFormat);
     container.appendChild(createInfoRow(t('bubble.mtime'), mtime));
   }
 
-  // Custom items
   for (const item of settings.customItems) {
     if (!item.enabled) {
       continue;
@@ -185,5 +169,13 @@ export async function updateBubbles(
     }
   }
 
-  insertion.parent.insertBefore(container, insertion.refChild);
+  // Insert right after the title container, so the info sits between
+  // the left nav area and the right controls.
+  const titleContainer = header.querySelector('.view-header-title-container');
+  if (titleContainer instanceof HTMLElement) {
+    titleContainer.style.overflow = 'visible';
+    titleContainer.after(container);
+  } else {
+    header.appendChild(container);
+  }
 }
