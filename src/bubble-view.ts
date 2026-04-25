@@ -3,7 +3,7 @@ import { type PluginSettings, type CustomInfoItem } from './types';
 import { t } from './i18n';
 
 const CONTAINER_CLASS = 'mhid-info-container';
-const ROW_CLASS = 'mhid-info-row';
+const BUBBLE_CLASS = 'mhid-info-bubble';
 const LABEL_CLASS = 'mhid-info-label';
 const VALUE_CLASS = 'mhid-info-value';
 
@@ -27,9 +27,9 @@ function formatDate(timestamp: number, format: string): string {
   }
 }
 
-function createInfoRow(label: string, value: string): HTMLElement {
-  const row = document.createElement('div');
-  row.className = ROW_CLASS;
+function createBubble(label: string, value: string): HTMLElement {
+  const bubble = document.createElement('div');
+  bubble.className = BUBBLE_CLASS;
 
   const labelEl = document.createElement('span');
   labelEl.className = LABEL_CLASS;
@@ -39,9 +39,9 @@ function createInfoRow(label: string, value: string): HTMLElement {
   valueEl.className = VALUE_CLASS;
   valueEl.textContent = value;
 
-  row.appendChild(labelEl);
-  row.appendChild(valueEl);
-  return row;
+  bubble.appendChild(labelEl);
+  bubble.appendChild(valueEl);
+  return bubble;
 }
 
 async function getCustomItemValue(file: TFile, app: App, item: CustomInfoItem): Promise<string> {
@@ -93,7 +93,7 @@ export async function updateBubbles(
     return;
   }
 
-  // Remove clipping so multi-line content is visible
+  // Prevent the header from clipping the bubble row
   header.style.overflow = 'visible';
   header.style.minHeight = 'auto';
 
@@ -101,19 +101,20 @@ export async function updateBubbles(
 
   const container = document.createElement('div');
   container.className = CONTAINER_CLASS;
+  const items: Array<{ label: string; value: string }> = [];
 
   if (settings.showPath) {
-    container.appendChild(createInfoRow(t('bubble.path'), file.path));
+    items.push({ label: t('bubble.path'), value: file.path });
   }
 
   if (settings.showCtime) {
     const ctime = formatDate(file.stat.ctime, settings.dateFormat);
-    container.appendChild(createInfoRow(t('bubble.ctime'), ctime));
+    items.push({ label: t('bubble.ctime'), value: ctime });
   }
 
   if (settings.showMtime) {
     const mtime = formatDate(file.stat.mtime, settings.dateFormat);
-    container.appendChild(createInfoRow(t('bubble.mtime'), mtime));
+    items.push({ label: t('bubble.mtime'), value: mtime });
   }
 
   for (const item of settings.customItems) {
@@ -122,8 +123,16 @@ export async function updateBubbles(
     }
     const value = await getCustomItemValue(file, app, item);
     if (value) {
-      container.appendChild(createInfoRow(item.label, value));
+      items.push({ label: item.label, value });
     }
+  }
+
+  if (items.length === 0) {
+    return;
+  }
+
+  for (const item of items) {
+    container.appendChild(createBubble(item.label, item.value));
   }
 
   // Insert right after the title container, so the info sits between
