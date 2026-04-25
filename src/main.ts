@@ -62,7 +62,7 @@ export default class MobileHeaderInfoPlugin extends Plugin {
     }
 
     const file = this.app.workspace.getActiveFile();
-    await updateBubbles(this.app, file, this.settings);
+    await updateBubbles(file, this.settings);
   }
 
   async loadSettings(): Promise<void> {

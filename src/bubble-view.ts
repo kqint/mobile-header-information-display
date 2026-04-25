@@ -1,4 +1,4 @@
-import { type App, TFile, Platform } from 'obsidian';
+import { TFile, Platform } from 'obsidian';
 import { type PluginSettings } from './types';
 import { t } from './i18n';
 
@@ -52,7 +52,6 @@ export function removeInfoContainer(): void {
 }
 
 export async function updateBubbles(
-  app: App,
   file: TFile | null,
   settings: PluginSettings,
 ): Promise<void> {
